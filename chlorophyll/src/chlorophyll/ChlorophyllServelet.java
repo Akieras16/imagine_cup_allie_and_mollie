@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.*;
 
 import javax.servlet.Servlet;
@@ -28,39 +29,41 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 		Connect c = new Connect();
 		
 			double[][] nums;
-			try {
-				nums = c.run();
-				image = buildImage(nums, 336, 336);
-				System.out.println("the color is " + image.getRGB(1, 1));
-				JPEGCodec.createJPEGEncoder(out).encode(image);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+				try {
+					nums = c.run();
+					image = buildImage(nums, 336, 336);
+					System.out.println("the color is " + image.getRGB(1, 1));
+					JPEGCodec.createJPEGEncoder(out).encode(image);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			
 		
 	
 		
 		out.close();
 	}
 
-	public BufferedImage buildImage(double [][] nums, int rows, int cols) throws SQLException{
-		BufferedImage image = new BufferedImage(cols, rows, BufferedImage.TYPE_INT_RGB);
+	public BufferedImage buildImage(double [][] nums, int rows, int cols) {
+		BufferedImage image = new BufferedImage(cols, rows, BufferedImage.TYPE_BYTE_INDEXED);
 		System.out.println("Building Image");
+
+		Graphics2D graphics = image.createGraphics();
+		
+		// Set back ground of the generated image to white
+		graphics.setColor(Color.BLUE);
+		graphics.fillRect(0, 0, 336, 336);
 		
 		
-		
-		int r = 1;
-		for(int i = 0; i < nums.length; i++){
-			for(int j = 0; j < nums[i].length; j++){
-				double db = nums[i][j];
-				
+		graphics.setColor(Color.GREEN);
+			for(int i = 0; i < nums.length; i++){
+				for(int j = 0; j < nums[i].length; j++){
+					double db = nums[i][j];
 					
-					Color c = new Color(26, 140, 255);
-					image.setRGB(r, i, c.getRGB());
-					
-				/**
-				
-				else{
+					if(db != -1){
 					int calc = (int) db * 10;
 					int green = 140 + calc;
 					int blue = 255 - calc;
@@ -79,8 +82,8 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 					}
 					
 					Color color = new Color(red, green, blue);
-					image.setRGB(r, i, color.getRGB());
-				} **/
+					graphics.drawLine(i,  j,  i,  j);
+				} 
 			}
 			
 		}
