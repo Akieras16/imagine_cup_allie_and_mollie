@@ -1,6 +1,9 @@
 package chlorophyll;
 
 import java.sql.Connection;
+import java.awt.Color;
+import java.awt.image.*;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,23 +60,30 @@ public class Connect {
 	private final String dbName = "chlorophyll";
 	
 	/** The name of the table we are testing with */
-	private final String tableName = "testcsv1replaced";
+	private final String tableName = "testcsv4replaced";
 	
+	BufferedImage bi = null;
 	/**
 	 * Get a new database connection
 	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	public Connection getConnection() throws SQLException {
+	public Connection getConnection() throws SQLException{
 		Connection conn = null;
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", this.userName);
 		connectionProps.put("password", this.password);
-
+		
+	
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
 		conn = DriverManager.getConnection("jdbc:mysql://"
 				+ this.serverName + ":" + this.portNumber + "/" + this.dbName,
 				connectionProps);
+		}catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
 		
 
 		return conn;
@@ -100,48 +110,61 @@ public class Connect {
 	
 	/**
 	 * Connect to MySQL and do some stuff.
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public void run() throws SQLException{
+	public double[][] run() throws SQLException{
 
+		double [][] fake = new double[0][0];
 		// Connect to MySQL
 		Connection conn = null;
 		try {
+			
 			conn = this.getConnection();
 			System.out.println("Connected to database");
 		} catch (SQLException e) {
 			System.out.println("ERROR: Could not connect to the database");
 			e.printStackTrace();
-			return;
+			
 		}
 
-		// Create a table
 		
 		Statement stmt = null;
 		
-		String query = "SELECT number " + 
-						"from " + dbName + ".testcsv1replaced";
+		String query = "SELECT * FROM " + dbName + ".testcsv4replaced";
+	
 		try {
 		    stmt = conn.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
-		    while(rs.next()){
-		    	double number = rs.getDouble("number");
-		    	System.out.println("Looking at latitude " + number);
+		    System.out.println("Successfully at try statement and now returning image");
+		    
+		    double [][] nums = new double[336][336];
+		    int r = 1;
+		    while(rs.next() && r < 336){
+				
+				for(int i = 1; i < 336; i++){
+					nums[r][i] = rs.getDouble(i);
+					
+				}
+				r++;
 		    }
+		    return nums;
+		   
 	    } catch (SQLException e) {
 			System.out.println("ERROR: Could not create the table");
 			e.printStackTrace();
-			return;
+			
 		}finally{
 			if(stmt != null){ stmt.close();}
 		} 
-	
+	return fake;
 	}
 	
+	
+	}
 	/**
 	 * Connect to the DB and do some stuff
 	 */
-	public static void main(String[] args) throws SQLException {
-		Connect app = new Connect();
-		app.run();
-	}
-}
+
+

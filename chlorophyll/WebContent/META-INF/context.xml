@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+<Resource name="jdbc/chlorophyll"
+
+auth="Container"
+
+type="javax.sql.DataSource"
+
+username="b5fc8fcedc1161"
+
+password="1d92f039"
+
+driverClassName="com.mysql.jdbc.Driver"
+
+url="jdbc:mysql://us-cdbr-azure-west-c.cloudapp.net:3306/chlorophyll"
+
+maxActive="15"
+
+maxIdle="3"/>
+
+</Context>
