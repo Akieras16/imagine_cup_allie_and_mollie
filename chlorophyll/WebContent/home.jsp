@@ -19,7 +19,7 @@
 </div>
 
 <div id = "date_control" class = "container">
-	<form>
+	<form action = "changed" method = "post">
 		<select name = "dates">
 			<option value = "1">
 				January
@@ -40,6 +40,7 @@
 				June
 			</option>
 		</select>
+		<input type = "submit" name = "Submit" value = "Change">
 	</form>
 </div>
 </body>

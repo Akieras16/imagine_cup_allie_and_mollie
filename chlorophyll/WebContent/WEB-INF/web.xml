@@ -17,7 +17,10 @@
 		<servlet-name>ChlorophyllServelet</servlet-name>
 		<url-pattern>/cl.jpg</url-pattern>
 	</servlet-mapping>
-	
+	<servlet-mapping>
+		<servlet-name>ChlorophyllServelet</servlet-name>
+		<url-pattern>/changed</url-pattern>
+	</servlet-mapping>
 	<resource-ref>
 		<res-ref-name>jdbc/chlorophyll</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>

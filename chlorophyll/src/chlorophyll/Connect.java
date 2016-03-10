@@ -60,15 +60,29 @@ public class Connect {
 	private final String dbName = "chlorophyll";
 	
 	/** The name of the table we are testing with */
-	private final String tableName = "testcsv4replaced";
+	private String tableName = "testcsv4replaced";
 	
 	BufferedImage bi = null;
+	public int numtable = 4;
 	/**
 	 * Get a new database connection
 	 * 
 	 * @return
 	 * @throws SQLException
 	 */
+	public void setTable(int i){
+		
+		numtable = i;
+		if(numtable == 4){
+			tableName = "testcsv4replaced";
+		}else if(numtable == 5){
+			tableName = "testcsv5replaced";
+		}else if(numtable == 6){
+			tableName = "testcsv6selected";
+		}else if(numtable == 1){
+			tableName = "testcsv1replaced";
+		}
+	}
 	public Connection getConnection() throws SQLException{
 		Connection conn = null;
 		Properties connectionProps = new Properties();
@@ -132,7 +146,7 @@ public class Connect {
 		
 		Statement stmt = null;
 		
-		String query = "SELECT * FROM " + dbName + ".testcsv4replaced";
+		String query = "SELECT * FROM " + dbName + "." + tableName;
 	
 		try {
 		    stmt = conn.createStatement();

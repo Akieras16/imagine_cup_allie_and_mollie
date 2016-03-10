@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.*;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -18,16 +19,36 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 
 public class ChlorophyllServelet extends HttpServlet implements Servlet {
 
+	public String picture = null;
 	private static final long serialVersionUID = -2410215321673656626L;
 
 	@Override
+	protected void doPost(HttpServletRequest request,
+	        HttpServletResponse response) throws ServletException, IOException {
+
+	    // Retrieve First Name from /Demo/ text field
+	    String var = request.getParameter("dates");
+	    System.out.println("Choice: " + var);
+	
+		//
+	    picture = var;
+	    request.getRequestDispatcher("/home.jsp").forward(request, response);
+	}
+	
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("In doGet");
+		String option = req.getParameter("dates");
+		System.out.println("Choice in get: " + option);
+		System.out.println("picture is " + picture);
 		resp.setContentType("image/jpg");
 		ServletOutputStream out = resp.getOutputStream();
 		BufferedImage image = null;
 		Connect c = new Connect();
-		
+		if(picture != null){
+		c.setTable(Integer.parseInt(picture));
+		}
 			double[][] nums;
 			
 				try {
@@ -42,9 +63,9 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 			
 			
 		
-	
 		
 		out.close();
+	
 	}
 
 	public BufferedImage buildImage(double [][] nums, int rows, int cols) {
@@ -90,4 +111,9 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 		
 		return image;
 	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+
 }
