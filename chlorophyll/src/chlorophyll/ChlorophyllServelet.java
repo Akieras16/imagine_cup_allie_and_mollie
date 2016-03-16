@@ -43,8 +43,10 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 		System.out.println("Choice in get: " + option);
 		System.out.println("picture is " + picture);
 		resp.setContentType("image/jpg");
+		
 		ServletOutputStream out = resp.getOutputStream();
 		BufferedImage image = null;
+		
 		Connect c = new Connect();
 		if(picture != null){
 		c.setTable(Integer.parseInt(picture));
@@ -65,6 +67,7 @@ public class ChlorophyllServelet extends HttpServlet implements Servlet {
 		
 		
 		out.close();
+		
 	
 	}
 

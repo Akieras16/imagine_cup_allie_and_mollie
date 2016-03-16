@@ -81,6 +81,10 @@ public class Connect {
 			tableName = "testcsv6selected";
 		}else if(numtable == 1){
 			tableName = "testcsv1replaced";
+		}else if(numtable == 3){
+			tableName = "testcsv3replaced";
+		}else if(numtable == 2){
+			tableName = "testcsv2replaced";
 		}
 	}
 	public Connection getConnection() throws SQLException{
@@ -98,8 +102,6 @@ public class Connect {
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
-		
-
 		return conn;
 	}
 
@@ -163,6 +165,8 @@ public class Connect {
 				}
 				r++;
 		    }
+		    
+		    conn.close();
 		    return nums;
 		   
 	    } catch (SQLException e) {
@@ -174,6 +178,7 @@ public class Connect {
 		} 
 	return fake;
 	}
+	
 	
 	
 	}
