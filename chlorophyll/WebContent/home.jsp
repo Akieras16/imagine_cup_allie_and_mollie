@@ -18,7 +18,7 @@
 <img alt = "MAP" src = "cl.jpg">
 </div>
 
-<div id = "date_control" class = "container">
+<div id = "controls" class = "container">
 	<form action = "changed" method = "post">
 		<select name = "dates">
 			<option value = "1">

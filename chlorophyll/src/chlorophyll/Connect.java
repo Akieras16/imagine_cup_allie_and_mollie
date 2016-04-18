@@ -155,15 +155,17 @@ public class Connect {
 		    ResultSet rs = stmt.executeQuery(query);
 		    System.out.println("Successfully at try statement and now returning image");
 		    
-		    double [][] nums = new double[336][336];
+		    double [][] nums = new double[337][482];
 		    int r = 1;
-		    while(rs.next() && r < 336){
+		    while(rs.next()){
 				
-				for(int i = 1; i < 336; i++){
-					nums[r][i] = rs.getDouble(i);
+				for(int i = 0; i < 482; i++){
+					Double db = rs.getDouble(i + 1);
 					
+					nums[r][i] = db;
 				}
 				r++;
+				
 		    }
 		    
 		    conn.close();
