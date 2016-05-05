@@ -10,65 +10,39 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-/**
- * This class demonstrates how to connect to MySQL and run some basic commands.
+/** this class connects to the database and returns the arrays of longitude and latitude points. 
+ * The points for each month are stored in a different table.
  * 
- * In order to use this, you have to download the Connector/J driver and add
- * its .jar file to your build path.  You can find it here:
- * 
- * http://dev.mysql.com/downloads/connector/j/
- * 
- * You will see the following exception if it's not in your class path:
- * 
- * java.sql.SQLException: No suitable driver found for jdbc:mysql://localhost:3306/
- * 
- * To add it to your class path:
- * 1. Right click on your project
- * 2. Go to Build Path -> Add External Archives...
- * 3. Select the file mysql-connector-java-5.1.24-bin.jar
- *    NOTE: If you have a different version of the .jar file, the name may be
- *    a little different.
- *    
- * The user name and password are both "root", which should be correct if you followed
- * the advice in the MySQL tutorial. If you want to use different credentials, you can
- * change them below. 
- * 
- * You will get the following exception if the credentials are wrong:
- * 
- * java.sql.SQLException: Access denied for user 'userName'@'localhost' (using password: YES)
- * 
- * You will instead get the following exception if MySQL isn't installed, isn't
- * running, or if your serverName or portNumber are wrong:
- * 
- * java.net.ConnectException: Connection refused
+ *
  */
 public class Connect {
 
-	/** The name of the MySQL account to use (or empty for anonymous) */
+	/** The name of the MySQL account to use*/
 	private final String userName = "b5fc8fcedc1161";
 
-	/** The password for the MySQL account (or empty for anonymous) */
+	/** The password for the MySQL account */
 	private final String password = "1d92f039";
 
-	/** The name of the computer running MySQL */
+	/** The name of the server running MySQL */
 	private final String serverName = "us-cdbr-azure-west-c.cloudapp.net";
 
-	/** The port of the MySQL server (default is 3306) */
+	/** The port of the MySQL server ) */
 	private final int portNumber = 3306;
 
-	/** The name of the database we are testing with (this default is installed with MySQL) */
+	/** The name of the database containing the chlorophyll data  */
 	private final String dbName = "chlorophyll";
 	
-	/** The name of the table we are testing with */
+	/** The name of the default table to test with (this table represents the data for April */
 	private String tableName = "testcsv4replaced";
 	
+	//creates an image that will be used to build the picture as well as a numerical value representing
+	//the table number being used
 	BufferedImage bi = null;
 	public int numtable = 4;
-	/**
-	 * Get a new database connection
-	 * 
-	 * @return
-	 * @throws SQLException
+	
+	/**Chooses the table to use based on the value selected in the Chlorophyll servlet
+	 * (this value is passed as an integer when a new connecteion is created
+	 * @param i
 	 */
 	public void setTable(int i){
 		
@@ -87,13 +61,21 @@ public class Connect {
 			tableName = "testcsv2replaced";
 		}
 	}
+	
+	/** this establishes the connection to the database
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
 	public Connection getConnection() throws SQLException{
+		
+		//creates values for the connection and properties
 		Connection conn = null;
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", this.userName);
 		connectionProps.put("password", this.password);
 		
-	
+		//establishes the connection and stores it in conn
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 		conn = DriverManager.getConnection("jdbc:mysql://"
@@ -106,8 +88,7 @@ public class Connect {
 	}
 
 	/**
-	 * Run a SQL command which does not return a recordset:
-	 * CREATE/INSERT/UPDATE/DELETE/DROP/etc.
+	 * Run a SQL command to update the database if needed
 	 * 
 	 * @throws SQLException If something goes wrong
 	 */
@@ -125,14 +106,13 @@ public class Connect {
 	}
 	
 	/**
-	 * Connect to MySQL and do some stuff.
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * Connect to MySQL and return the double array of pigment values at latitude/longitude points 
 	 */
 	public double[][] run() throws SQLException{
 
+		//creates an empty array to return if the connection fails
 		double [][] fake = new double[0][0];
+		
 		// Connect to MySQL
 		Connection conn = null;
 		try {
@@ -145,11 +125,14 @@ public class Connect {
 			
 		}
 
-		
+		//builds the statement and query to run, selecting all of the data in the table that was chosen
 		Statement stmt = null;
 		
 		String query = "SELECT * FROM " + dbName + "." + tableName;
 	
+		/** creates and runs statement and fills the double array with the returned data
+		 * 
+		 */
 		try {
 		    stmt = conn.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
@@ -184,8 +167,6 @@ public class Connect {
 	
 	
 	}
-	/**
-	 * Connect to the DB and do some stuff
-	 */
+	
 
 

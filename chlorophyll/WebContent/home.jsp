@@ -14,10 +14,15 @@
 	Chlorophyll Data: Bay of Bengal
 	<p>
 </div>
+
+<!-- creates the container to hold the app -->
 <div id ="app_container" class ="container">
+
+<!-- creates an image to hold the map. This image is dynamically generated in the java files -->
 <img alt = "MAP" src = "cl.jpg">
 </div>
 
+<!-- holds the controls to change the picture in a form -->
 <div id = "controls" class = "container">
 	<form action = "changed" method = "post">
 		<select name = "dates">
